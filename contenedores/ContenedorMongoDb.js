@@ -8,6 +8,7 @@ await mongoose.connect(config.mongoDB.URI)
 class ContenedorMongoDb {
     constructor(modelName,schema){
         this.collection = mongoose.model(modelName, schema)
+        console.log(modelName);
     }
 
     async obtenerPorId(id){
@@ -43,17 +44,17 @@ class ContenedorMongoDb {
     async obtenerPorCriterio(query = {}){
         const criterio = query
         try {
-            logger.log('intentando buscar elemento  mongodb',query);
+            logger.info('intentando buscar elemento  mongodb',query);
             
             const obj = await this.collection.findOne(criterio)
-            console.log('elemento encontrado mongodb',obj);
+            console.info('elemento encontrado mongodb',obj);
             if (!obj) {
-                //throw new Error(`criterio ${criterio} no encontrado.`);         
+                logger.error(`criterio ${criterio} no encontrado.`);                
                 return null
             }
             return obj
         } catch (error) {
-            console.log('ocurrio un error mongo', error.message)
+            logger.error(`ocurrio un error mongo: ${error.message}` )
             throw new Error(error.message)      
         }          
     }

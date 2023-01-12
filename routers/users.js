@@ -1,7 +1,6 @@
 import { Router } from "express";
-import UserController from "../controllers/users.js";
+import UsuariosController from "../controllers/usuarios.js";
 import { encryptPassword } from "../utils/handleEncrypt.js";
-import UserModel from "../models/user.js";
 const router = Router();
 
 router.post("/", async (req, res, next) => {
@@ -9,10 +8,8 @@ router.post("/", async (req, res, next) => {
     const { body } = req;
     const { email, password } = body;
 
-    console.log("email", email);
-    const users = UserController.get();
-    //console.log("usuarios:", users);
-    const user = await UserModel.findOne({ email });
+    console.log("email", email);        
+    const user = await UsuariosController.obtenerPorCriterio({ email });
     console.log("usuario encontrado:", user);
     if (user) {
       res
@@ -32,7 +29,7 @@ router.post("/", async (req, res, next) => {
       ...body,
       password: encryptPassword(password),
     };
-    const userResult = await UserController.create(newUser);
+    const userResult = await UsuariosController.crear(newUser);
     res.redirect("/sign-in");
   } catch (error) {
     next(error);
@@ -42,7 +39,7 @@ router.post("/", async (req, res, next) => {
 router.get("/", async (req, res, next) => {
   try {
     const { query = {} } = req;
-    const users = await UserController.get(query);
+    const users = await UsuariosController.obtener(query);
     res.json(users);
   } catch (error) {
     next(error);

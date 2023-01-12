@@ -1,18 +1,10 @@
 let usuariosDao
-
-switch (process.env.PERSISTENCIA) {
-    case 'json':        
-        const { default: UsuarioDaoArchivo } = await import('./usuarios/UsuariosDaoArchivo.js')        
-        usuariosDao = new UsuarioDaoArchivo()
-        break    
-    case 'mongodb':        
+const persistencia = process.env.PERSISTENCIA || 'mongodb'
+switch (process.env.PERSISTENCIA) {        
+    case persistencia:        
         const { default: UsuariosDaoMongoDb } = await import('./usuarios/UsuariosDaoMongoDb.js')
         usuariosDao = new UsuariosDaoMongoDb()
-        break
-        
-    default:        
-        const { default: UsuariosDaoMem } = await import('./usuarios/UsuariosDaoMem.js')        
-        usuariosDao = new UsuariosDaoMem()
+        break        
 }
 
 export { usuariosDao }

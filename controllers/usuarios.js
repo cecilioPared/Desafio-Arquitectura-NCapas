@@ -60,7 +60,7 @@ class UsuariosController {
   static async obtenerPorCriterio(query = {}) {
     const method = 'obtenerPorCriterio'
     try {
-        console.log(`${log}${method} intentando obtener usuarios.`)
+        console.log(`${log}${method} intentando obtener usuarios. ${query}`)
       const data = await usuarioServices.obtenerPorCriterio(query)
       console.log(`${log}${method} usuarios encontrado con éxito.`)
       console.log(data)
